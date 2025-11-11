@@ -11,15 +11,11 @@ export const TreeRootNode: CollectionConfig = {
       type: 'text',
       required: true,
     },
-    {
-      name: 'description',
-      type: 'textarea',
-    },
-    {
-      name: 'children',
-      type: 'join',
-      collection: 'tree-branch-nodes',
-      on: 'parent',
-    },
+    // {
+    //   name: 'mychildren',
+    //   type: 'join',
+    //   collection: 'tree-branch-nodes',
+    //   on: 'myparent',
+    // },
   ],
 }

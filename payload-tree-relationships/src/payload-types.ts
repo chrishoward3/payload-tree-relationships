@@ -78,11 +78,8 @@ export interface Config {
     'payload-migrations': PayloadMigration;
   };
   collectionsJoins: {
-    'tree-root-nodes': {
-      children: 'tree-branch-nodes';
-    };
     'tree-branch-nodes': {
-      children: 'tree-branch-nodes' | 'tree-leaf-nodes';
+      mychildren: 'tree-branch-nodes' | 'tree-leaf-nodes';
     };
   };
   collectionsSelect: {
@@ -178,12 +175,6 @@ export interface Media {
 export interface TreeRootNode {
   id: number;
   title: string;
-  description?: string | null;
-  children?: {
-    docs?: (number | TreeBranchNode)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
   updatedAt: string;
   createdAt: string;
 }
@@ -194,17 +185,16 @@ export interface TreeRootNode {
 export interface TreeBranchNode {
   id: number;
   title: string;
-  description?: string | null;
-  parent:
-    | {
+  myparent?:
+    | ({
         relationTo: 'tree-root-nodes';
         value: number | TreeRootNode;
-      }
-    | {
+      } | null)
+    | ({
         relationTo: 'tree-branch-nodes';
         value: number | TreeBranchNode;
-      };
-  children?: {
+      } | null);
+  mychildren?: {
     docs?: (
       | {
           relationTo?: 'tree-branch-nodes';
@@ -228,23 +218,7 @@ export interface TreeBranchNode {
 export interface TreeLeafNode {
   id: number;
   title: string;
-  description?: string | null;
-  parent: number | TreeBranchNode;
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
+  myparent?: (number | null) | TreeBranchNode;
   updatedAt: string;
   createdAt: string;
 }
@@ -380,8 +354,6 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface TreeRootNodesSelect<T extends boolean = true> {
   title?: T;
-  description?: T;
-  children?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -391,9 +363,8 @@ export interface TreeRootNodesSelect<T extends boolean = true> {
  */
 export interface TreeBranchNodesSelect<T extends boolean = true> {
   title?: T;
-  description?: T;
-  parent?: T;
-  children?: T;
+  myparent?: T;
+  mychildren?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -403,9 +374,7 @@ export interface TreeBranchNodesSelect<T extends boolean = true> {
  */
 export interface TreeLeafNodesSelect<T extends boolean = true> {
   title?: T;
-  description?: T;
-  parent?: T;
-  content?: T;
+  myparent?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -1,5 +1,5 @@
 {
-  "id": "fa1e22f3-62b6-4671-bed4-4b62af3c64cf",
+  "id": "41b25ec0-fdb6-4b73-a98f-8f26b6f47dc9",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -369,12 +369,6 @@
           "primaryKey": false,
           "notNull": true
         },
-        "description": {
-          "name": "description",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp(3) with time zone",
@@ -444,12 +438,6 @@
           "type": "varchar",
           "primaryKey": false,
           "notNull": true
-        },
-        "description": {
-          "name": "description",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
         },
         "updated_at": {
           "name": "updated_at",
@@ -686,21 +674,9 @@
           "primaryKey": false,
           "notNull": true
         },
-        "description": {
-          "name": "description",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "parent_id": {
-          "name": "parent_id",
+        "myparent_id": {
+          "name": "myparent_id",
           "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "content": {
-          "name": "content",
-          "type": "jsonb",
           "primaryKey": false,
           "notNull": false
         },
@@ -720,11 +696,11 @@
         }
       },
       "indexes": {
-        "tree_leaf_nodes_parent_idx": {
-          "name": "tree_leaf_nodes_parent_idx",
+        "tree_leaf_nodes_myparent_idx": {
+          "name": "tree_leaf_nodes_myparent_idx",
           "columns": [
             {
-              "expression": "parent_id",
+              "expression": "myparent_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -767,12 +743,12 @@
         }
       },
       "foreignKeys": {
-        "tree_leaf_nodes_parent_id_tree_branch_nodes_id_fk": {
-          "name": "tree_leaf_nodes_parent_id_tree_branch_nodes_id_fk",
+        "tree_leaf_nodes_myparent_id_tree_branch_nodes_id_fk": {
+          "name": "tree_leaf_nodes_myparent_id_tree_branch_nodes_id_fk",
           "tableFrom": "tree_leaf_nodes",
           "tableTo": "tree_branch_nodes",
           "columnsFrom": [
-            "parent_id"
+            "myparent_id"
           ],
           "columnsTo": [
             "id"

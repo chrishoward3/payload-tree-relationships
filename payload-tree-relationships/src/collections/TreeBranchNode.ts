@@ -12,20 +12,15 @@ export const TreeBranchNode: CollectionConfig = {
       required: true,
     },
     {
-      name: 'description',
-      type: 'textarea',
-    },
-    {
-      name: 'parent',
+      name: 'myparent',
       type: 'relationship',
       relationTo: ['tree-root-nodes', 'tree-branch-nodes'],
-      required: true,
     },
     {
-      name: 'children',
+      name: 'mychildren',
       type: 'join',
       collection: ['tree-branch-nodes', 'tree-leaf-nodes'],
-      on: 'parent',
+      on: 'myparent',
     },
   ],
 }

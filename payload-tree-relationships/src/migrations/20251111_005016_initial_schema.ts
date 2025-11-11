@@ -42,7 +42,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TABLE "tree_root_nodes" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"title" varchar NOT NULL,
-  	"description" varchar,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
@@ -50,7 +49,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TABLE "tree_branch_nodes" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"title" varchar NOT NULL,
-  	"description" varchar,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
@@ -67,9 +65,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TABLE "tree_leaf_nodes" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"title" varchar NOT NULL,
-  	"description" varchar,
-  	"parent_id" integer NOT NULL,
-  	"content" jsonb,
+  	"myparent_id" integer,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
@@ -127,7 +123,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "tree_branch_nodes_rels" ADD CONSTRAINT "tree_branch_nodes_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."tree_branch_nodes"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "tree_branch_nodes_rels" ADD CONSTRAINT "tree_branch_nodes_rels_tree_root_nodes_fk" FOREIGN KEY ("tree_root_nodes_id") REFERENCES "public"."tree_root_nodes"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "tree_branch_nodes_rels" ADD CONSTRAINT "tree_branch_nodes_rels_tree_branch_nodes_fk" FOREIGN KEY ("tree_branch_nodes_id") REFERENCES "public"."tree_branch_nodes"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "tree_leaf_nodes" ADD CONSTRAINT "tree_leaf_nodes_parent_id_tree_branch_nodes_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."tree_branch_nodes"("id") ON DELETE set null ON UPDATE no action;
+  ALTER TABLE "tree_leaf_nodes" ADD CONSTRAINT "tree_leaf_nodes_myparent_id_tree_branch_nodes_id_fk" FOREIGN KEY ("myparent_id") REFERENCES "public"."tree_branch_nodes"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."payload_locked_documents"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_media_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE cascade ON UPDATE no action;
@@ -153,7 +149,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "tree_branch_nodes_rels_path_idx" ON "tree_branch_nodes_rels" USING btree ("path");
   CREATE INDEX "tree_branch_nodes_rels_tree_root_nodes_id_idx" ON "tree_branch_nodes_rels" USING btree ("tree_root_nodes_id");
   CREATE INDEX "tree_branch_nodes_rels_tree_branch_nodes_id_idx" ON "tree_branch_nodes_rels" USING btree ("tree_branch_nodes_id");
-  CREATE INDEX "tree_leaf_nodes_parent_idx" ON "tree_leaf_nodes" USING btree ("parent_id");
+  CREATE INDEX "tree_leaf_nodes_myparent_idx" ON "tree_leaf_nodes" USING btree ("myparent_id");
   CREATE INDEX "tree_leaf_nodes_updated_at_idx" ON "tree_leaf_nodes" USING btree ("updated_at");
   CREATE INDEX "tree_leaf_nodes_created_at_idx" ON "tree_leaf_nodes" USING btree ("created_at");
   CREATE UNIQUE INDEX "payload_kv_key_idx" ON "payload_kv" USING btree ("key");

@@ -12,18 +12,9 @@ export const TreeLeafNode: CollectionConfig = {
       required: true,
     },
     {
-      name: 'description',
-      type: 'textarea',
-    },
-    {
-      name: 'parent',
+      name: 'myparent',
       type: 'relationship',
       relationTo: 'tree-branch-nodes',
-      required: true,
-    },
-    {
-      name: 'content',
-      type: 'richText',
     },
   ],
 }
