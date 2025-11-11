@@ -1,0 +1,29 @@
+import type { CollectionConfig } from 'payload'
+
+export const TreeLeafNode: CollectionConfig = {
+  slug: 'tree-leaf-nodes',
+  admin: {
+    useAsTitle: 'title',
+  },
+  fields: [
+    {
+      name: 'title',
+      type: 'text',
+      required: true,
+    },
+    {
+      name: 'description',
+      type: 'textarea',
+    },
+    {
+      name: 'parent',
+      type: 'relationship',
+      relationTo: 'tree-branch-nodes',
+      required: true,
+    },
+    {
+      name: 'content',
+      type: 'richText',
+    },
+  ],
+}
